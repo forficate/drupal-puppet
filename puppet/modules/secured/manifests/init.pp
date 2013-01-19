@@ -1,4 +1,4 @@
-class secured($user = "adam", $password='changeme') {
+class secured($user = "adam") {
       
     group { "admin":
         ensure => "present",
@@ -8,7 +8,7 @@ class secured($user = "adam", $password='changeme') {
         ensure     => "present",
         managehome => true,
         groups => ['admin'],
-        password => str2saltedsha512($password),
+        password => '$6$RtGpuLI3P7g$fNMmQtGRie3KwFlOj1Az7vIy.PkSzka0ZBqkLMQQ7MABMZjcAI43722.qbEJ0Dvh4/GD05TVtcRm1.FzReRdJ1',
         home       => "/home/$user",
         shell      => '/bin/bash',
     }
