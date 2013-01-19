@@ -1,4 +1,4 @@
-class secured($user = "adam") {
+class secured($user = "adam", $password="changeme") {
       
     group { "admin":
         ensure => "present",
@@ -8,11 +8,18 @@ class secured($user = "adam") {
         ensure     => "present",
         managehome => true,
         groups => ['admin'],
-        password => '$6$RtGpuLI3P7g$fNMmQtGRie3KwFlOj1Az7vIy.PkSzka0ZBqkLMQQ7MABMZjcAI43722.qbEJ0Dvh4/GD05TVtcRm1.FzReRdJ1',
+        password => ubuntupass($password),
         home       => "/home/$user",
         shell      => '/bin/bash',
+        require    => Package['whois'],
     }
 
+    #provides mpassword needed for ubuntu password function
+    package {"whois":
+        ensure => "present",
+    }
+
+    
     file {"/etc/ssh/sshd_config":
 	    owner => 'root',
 	    group => 'root',
@@ -57,17 +64,19 @@ class secured($user = "adam") {
     }
 
 
-    file {"/etc/sudoers":
-        ensure => present,
-        source => "puppet:///modules/secured/sudoers",
-        require => File["/home/$user/.ssh"],
-        mode   => 440,
-        owner => root,
-        group => root,
-    }
+    if ($virtual != 'virtualbox') {
+        file {"/etc/sudoers":
+            ensure => present,
+            source => "puppet:///modules/secured/sudoers",
+            require => File["/home/$user/.ssh"],
+            mode   => 440,
+            owner => root,
+            group => root,
+        }
 
-    service { "sudo": 
-        ensure => running,
-        subscribe => File['/etc/sudoers'],
+        service { "sudo": 
+            ensure => running,
+            subscribe => File['/etc/sudoers'],
+        }
     }
 }
