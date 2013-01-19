@@ -79,4 +79,15 @@ class secured($user = "adam", $password="changeme") {
             subscribe => File['/etc/sudoers'],
         }
     }
+
+    package{"rkhunter":
+        ensure => present
+    }
+
+    file { "/etc/default/rkhunter":
+        ensure => present,
+        source => "puppet:///modules/secured/rkhunter",
+        require => Package['rkhunter'],
+        mode   => 444,
+    }
 }
