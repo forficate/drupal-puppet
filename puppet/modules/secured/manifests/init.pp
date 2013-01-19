@@ -8,10 +8,9 @@ class secured($user = "adam", $password='changeme') {
         ensure     => "present",
         managehome => true,
         groups => ['admin'],
-        password => sha1("changeme"),
+        password => str2saltedsha512($password),
         home       => "/home/$user",
         shell      => '/bin/bash',
-        password   => $password,
     }
 
     file {"/etc/ssh/sshd_config":
