@@ -40,15 +40,30 @@ class secured($user = "adam") {
     }
 
     package { "denyhosts":
-		ensure => present,
-	}
+        ensure => present,
+    }
 
-	include ufw
-	ufw::allow { "allow-ssh-from-all":
+    include ufw
+    ufw::allow { "allow-ssh-from-all":
       port => 22,
     }
 
     ufw::allow { "allow-http-from-all":
       port => 80,
+    }
+
+
+    file {"/etc/sudoers":
+        ensure => present,
+        source => "puppet:///modules/secured/sudoers",
+        require => File["/home/$user/.ssh"],
+        mode   => 440,
+        owner => root,
+        group => root,
+    }
+
+    service { "sudo": 
+        ensure => running,
+        subscribe => File['/etc/sudoers'],
     }
 }
