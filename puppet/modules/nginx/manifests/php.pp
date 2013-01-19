@@ -15,4 +15,13 @@ class nginx::php {
 		ensure => running,
 		subscribe => Package['php5-fpm'],
 	}
+
+	file { "/etc/php5/conf.d/apc.ini":
+		require => Package["php-apc"],
+		notify => Service["php5-fpm"],
+		source => "puppet:///modules/nginx/nginx.conf",
+		owner => 'root',
+		group => 'root',
+		mode => '644',
+	}
 }
