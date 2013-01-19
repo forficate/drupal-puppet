@@ -1,4 +1,4 @@
-class secured($user = "adam") {
+class secured($user = "adam", $password='changeme') {
       
     group { "admin":
         ensure => "present",
@@ -11,6 +11,7 @@ class secured($user = "adam") {
         password => sha1("changeme"),
         home       => "/home/$user",
         shell      => '/bin/bash',
+        password   => $password,
     }
 
     file {"/etc/ssh/sshd_config":
