@@ -9,6 +9,8 @@ class secured($user = "adam") {
         managehome => true,
         groups => ['admin'],
         password => sha1("changeme"),
+        home       => '/home/$user',
+        shell      => '/bin/bash',
     }
 
     file {"/etc/ssh/sshd_config":
@@ -26,8 +28,10 @@ class secured($user = "adam") {
 
     file { "/home/$user/.ssh":
         ensure => directory,
-        require => User["adam"],
+        require => User[$user],
         mode => 700,
+        owner => $user,
+        group => $user,
     }
 
     file { "/home/$user/.ssh/authorized_keys":
