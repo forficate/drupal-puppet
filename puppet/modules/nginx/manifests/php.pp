@@ -6,6 +6,11 @@ class nginx::php {
 		require => Class["nginx"]
 	}
 
+	package {"php-apc":
+		ensure => present,
+		require=> Package["php5-fpm"]
+	}
+
 	service { "php5-fpm": 
 		ensure => running,
 		subscribe => Package['php5-fpm'],

@@ -16,6 +16,7 @@ class drush {
 		unless => "pear list -c pear.drush.org | grep drush",
 	}
 
+	#drush dependency
 	exec {"install_console_table":
 		command => "pear install Console_Table",
 		require => Package['php-pear'],
