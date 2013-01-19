@@ -9,7 +9,7 @@ class secured($user = "adam") {
         managehome => true,
         groups => ['admin'],
         password => sha1("changeme"),
-        home       => '/home/$user',
+        home       => "/home/$user",
         shell      => '/bin/bash',
     }
 
