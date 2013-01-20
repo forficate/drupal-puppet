@@ -1,4 +1,4 @@
-class secured($user = "adam", $password="changeme") {
+class secured($user = "adam") {
       
     group { "admin":
         ensure => "present",
@@ -8,7 +8,7 @@ class secured($user = "adam", $password="changeme") {
         ensure     => "present",
         managehome => true,
         groups => ['admin'],
-        password => ubuntupass($password),
+        password => '$6$7uRMbWESJY$eQ3QgjzSod8sGQNiSKZOXHQiipwTpkvVowjr8fMvVhQmVcxi6M2Uyk97p7pv60U.uHWnXjImLlMZqhNjch5B.1',
         home       => "/home/$user",
         shell      => '/bin/bash',
         require    => Package['whois'],
