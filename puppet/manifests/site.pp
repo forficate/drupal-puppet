@@ -9,6 +9,6 @@ exec { "apt-update":
 }
 
 node default {
-  include truth::enforcer
+    include truth::enforcer
 }
 
