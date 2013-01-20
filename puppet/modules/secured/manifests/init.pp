@@ -1,4 +1,4 @@
-class secured($user = "adam") {
+class secured($user = "adam", $password="changeme") {
       
     group { "admin":
         ensure => "present",
@@ -8,10 +8,16 @@ class secured($user = "adam") {
         ensure     => "present",
         managehome => true,
         groups => ['admin'],
-        password => '$6$pfmuWxfr$Qh0vh9PIU0b8vyudAdxvIzY8LbVrTBYy1w9leqeXHksq3KW6ddeCcSihQ.jWEDbxA8fplsVinOMNg2YWP7PN11',
         home       => "/home/$user",
         shell      => '/bin/bash',
         require    => Package['whois'],
+        notify => Exec["set_initial_password"],
+    }
+
+    exec {"set_initial_password":
+        command => "echo '$user:$password' | chpasswd",
+        unless => "cat /etc/shadow | awk -F: '{print $1}' | grep ^$user$",
+        require => User[$user],
     }
 
     #provides mpassword needed for ubuntu password function
