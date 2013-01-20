@@ -13,7 +13,7 @@ class drush {
 	exec {"install_drush":
 		command => "pear install drush/drush",
 		require => Exec["add_drush_pear_channel"],
-		unless => "pear list -c pear.drush.org | grep drush",
+		unless => "pear list -c pear.drush.org | awk '{print $1}' | grep ^drush",
 	}
 
 	#drush dependency

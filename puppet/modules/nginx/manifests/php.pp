@@ -26,7 +26,7 @@ class nginx::php {
 	file { "/etc/php5/conf.d/apc.ini":
 		require => Package["php-apc"],
 		notify => Service["php5-fpm"],
-		source => "puppet:///modules/nginx/nginx.conf",
+		source => "puppet:///modules/nginx/apc.ini",
 		owner => 'root',
 		group => 'root',
 		mode => '644',
