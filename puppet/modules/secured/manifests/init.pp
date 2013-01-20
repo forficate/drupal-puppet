@@ -16,7 +16,7 @@ class secured($user = "adam", $password="changeme") {
 
     exec {"set_initial_password":
         command => "echo '$user:$password' | chpasswd",
-        unless => "cat /etc/shadow | awk -F: '{print $1}' | grep ^$user$",
+        unless => "cat /etc/shadow | awk -F: '{print \$1}' | grep ^$user\$",
         require => User[$user],
     }
 
