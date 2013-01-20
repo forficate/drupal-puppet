@@ -19,8 +19,8 @@ hostclass :nginx do
 
 	file '/var/www',
 		:ensure => "directory",
-		:owner 	=> "www-data",
-		:group  => "www-data",
+		:owner 	=> "root",
+		:group  => "root",
 		:mode   => '2775',
 		:require => 'Package[nginx]'
   	
