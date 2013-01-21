@@ -4,7 +4,7 @@ class secured($user = "adam", $password="changeme") {
         ensure => "present",
     }
 
-    user { "adam":
+    user { $user:
         ensure     => "present",
         managehome => true,
         groups => ['admin'],
@@ -14,9 +14,10 @@ class secured($user = "adam", $password="changeme") {
         notify => Exec["set_initial_password"],
     }
 
+    #Set initial user password and force password change on login
     exec {"set_initial_password":
-        command => "echo '$user:$password' | chpasswd",
-        unless => "cat /etc/shadow | awk -F: '{print \$1}' | grep ^$user\$",
+        command => "echo '$user:$password' | chpasswd && chage -d 0 $user",
+        unless => "last -n 1 $user | awk '{print \$1}' | grep ^$user\$",
         require => User[$user],
     }
 
