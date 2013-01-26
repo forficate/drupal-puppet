@@ -10,7 +10,7 @@ The build will setup:
  * apc with some sane defaults for a small 512Mb cloud server. Note we set "apc.stat = 0". This means when you update a php file you need to run "sudo service php5-fpm restart" for the changes to take affect. Setting apc.stat=0 prevents checking for file changes on each request and so acts as a production optimisation.
  * Basic server security
    * Prevent root ssh login
-   * Create a default user account. This is set to 'adam'. To change it update '$user = "adam"' in puppet/modules/secured/manifests.ini. <strong>Important: update the password in this file from changeme</strong>
+   * Create a default user account. This is set to 'adam'. To change it update '$user = "adam"' in puppet/modules/secured/manifests.ini. You will be asked for a password on first log in.
    * Add your public private key for passwordless login as the above user 'adam'. Please update puppet/modules/secured/files/authorized_keys with your public key.
    * Setup firewall rules to only allow ssh and http access. If you have a static IP you should update the firewall rule to only allow access from your ip. This is in puppet/modules/secured/manifests.ini, an example:
 
