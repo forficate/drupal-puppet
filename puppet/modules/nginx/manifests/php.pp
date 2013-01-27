@@ -23,6 +23,19 @@ class nginx::php {
         notify => Service["php5-fpm"],
     }
 
+    package {"php5-mysql":
+        ensure => present,
+        require=> Package["php5-fpm"],
+        notify => Service["php5-fpm"],
+    }
+
+    exec {"set_php_Listen_socket":
+        command => 'sed -i \'s/listen = 127.0.0.1:9000/listen = \/tmp\/phpfpm.sock/g\' /etc/php5/fpm/pool.d/www.conf',
+        unless => 'grep "^listen = /tmp/phpfpm.sock$" /etc/php5/fpm/pool.d/www.conf',
+        require => Package["php5-fpm"],
+        notify => Service["php5-fpm"],
+    }
+
     file { "/etc/php5/conf.d/apc.ini":
         require => Package["php-apc"],
         notify => Service["php5-fpm"],
